@@ -1,0 +1,74 @@
+Create table Credit
+(
+Credit_id number primary key,
+Credit_amount number,
+Top_up_date number
+);
+desc Credit;
+
+Create table Users
+(
+User_id number primary key,
+Full_name varchar2(50),
+Email varchar2(20),
+Phone_number number,
+Credit_id number,
+Foreign key(Credit_id) references Credit(Credit_id)
+);
+desc Users;
+
+Create table Vehicles
+(
+Vehicle_id number primary key,
+User_id number,
+Foreign key(User_id) references Users(User_id),
+Vehicle_type varchar2(10),
+Number_plate char(10)
+);
+desc Vehicles;
+
+Create table Plazas
+(
+Plaza_id number primary key,
+Description varchar2(50)
+);
+desc Plazas;
+
+Create table Toll_booths
+(
+Toll_booth_id number primary key,
+Plaza_id number,
+Foreign key(Plaza_id) references Plazas(Plaza_id),
+Lane_number number
+);
+desc Toll_booths;
+
+Create table Fares
+(
+Fare_id number primary key,
+Vehicle_type varchar2(10),
+Start_plaza_id number,
+Foreign key(Start_plaza_id) references Plazas(Plaza_id),
+End_plaza_id number,
+Foreign key(End_plaza_id) references Plazas(Plaza_id),
+Amount number,
+Effective_date number
+);
+desc Fares;
+
+Create table Trips
+(
+Trip_id number primary key,
+Trip_date number,
+Start_time number,
+End_time number,
+Start_booth_id number,
+Foreign key(Start_booth_id) references Toll_booths(Toll_booth_id),
+End_booth_id number,
+Foreign key(End_booth_id) references Toll_booths(Toll_booth_id),
+Vehicle_id number,
+Foreign key(Vehicle_id) references Vehicle(Vehicle_id),
+Fare_id number,
+Foreign key(Fare_id) references Fares(Fare_id)
+);
+desc Trips;
